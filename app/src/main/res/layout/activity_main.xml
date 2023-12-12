@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="208dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/car"/>
+
+    <EditText
+        android:id="@+id/edtEposta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:ems="10"
+        android:hint="E-Postanızı Giriniz"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edtSifre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="40dp"
+        android:hint="Şifrenizi Giriniz"
+        android:password="true"
+        android:layout_marginBottom="40dp"/>
+
+    <Button
+        android:id="@+id/btnGirisUser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="30dp"
+        android:onClick="btnGirisUser"
+        android:text="Giriş Yap"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btnGirisAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:onClick="btnGirisAdmin"
+        android:text="Otopark Sahibi Girişi"
+        android:textSize="20dp" />
+    <TextView
+        android:id="@+id/txtRegister"
+        android:textColor="@color/design_default_color_error"
+        android:clickable="true"
+        android:onClick="txtClick"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kayıt Ol"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:textSize="20dp"
+        android:textAlignment="center"/>
+
+</LinearLayout>

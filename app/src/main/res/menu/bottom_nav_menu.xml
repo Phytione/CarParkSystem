@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeScreen"
+        android:title="Ana Sayfa"
+        android:icon="@drawable/ic_home_foreground"/>
+    <item
+        android:id="@+id/islemlerScreen"
+        android:title="İşlemlerim"
+        android:icon="@drawable/ic_unknown_foreground"/>
+    <item
+        android:id="@+id/profileScreen"
+        android:title="Profil"
+        android:icon="@drawable/ic_person_foreground"/>
+
+</menu>
