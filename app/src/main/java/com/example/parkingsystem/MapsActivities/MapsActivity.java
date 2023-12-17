@@ -93,6 +93,7 @@
         ProgressBar progressBar;
 
         RecyclerView recyclerView;
+        TextView emptyTextViewMain;
 
 
         boolean info;
@@ -109,6 +110,8 @@
 
             binding = ActivityMapsBinding.inflate(getLayoutInflater());
             setContentView(binding.getRoot());
+            emptyTextViewMain=binding.emptyTextViewMain;
+
 
 
 
@@ -143,7 +146,7 @@
 
             binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            otoparkAdapter=new OtoparkAdapter(otoparkInfoArrayList);
+            otoparkAdapter=new OtoparkAdapter(this,otoparkInfoArrayList);
             binding.recyclerView.setAdapter(otoparkAdapter);
 
             swipeRefreshLayout=findViewById(R.id.swipeRefreshLayout);
@@ -508,12 +511,23 @@
                     getOtoparkLocations();
 
                     otoparkAdapter.notifyDataSetChanged();
+
+                    if (otoparkAdapter.getItemCount() == 0) {
+                        // Otopark yoksa mesajı göster
+                        showNoParkingMessage();
+                    }
+                    checkEmptyView();
                 }else {
                     showToast("Otoparklar getirilirken bir hata oluştu. Tekrar deneyiniz");
                 }
                 progressBar.setVisibility(View.GONE);
             });
 
+        }
+        private void showNoParkingMessage() {
+            emptyTextViewMain.setVisibility(View.VISIBLE);
+            emptyTextViewMain.setText("Üzgünüz, şu an bulunduğunuz konumda uygun otopark bulunmamaktadır. Lütfen farklı bir bölgeye giderek veya daha sonra tekrar deneyerek otoparkları görmeye çalışın.");
+            binding.recyclerView.setVisibility(View.INVISIBLE);
         }
         private void calculateDistances() {
             for (LatLng otoparkLatLng : otoparkLatLngList) {
@@ -522,7 +536,6 @@
         }
         private void calculateDistance(double userLatitude, double userLongitude, double otoparkLatitude, double otoparkLongitude) {
             distanceCalculator.calculateDistance(userLatitude, userLongitude, otoparkLatitude, otoparkLongitude);
-
         }
         private void getOtoparkLocations() {
             String collectionPath = "Otoparklar";
@@ -585,6 +598,23 @@
         private void refreshData() {
             getAllParks(); // Verileri yenile
             otoparkAdapter.notifyDataSetChanged(); // Adapter'a değişiklikleri bildir
+        }
+        public void checkEmptyView() {
+            if (otoparkAdapter == null || otoparkAdapter.getItemCount() == 0) {
+                binding.recyclerView.setVisibility(View.INVISIBLE);
+
+                // RecyclerView boşken gösterilecek TextView'yi görünür yapın
+                if (emptyTextViewMain != null) {
+                    emptyTextViewMain.setVisibility(View.VISIBLE);
+                }
+            } else {
+                binding.recyclerView.setVisibility(View.VISIBLE);
+
+                // RecyclerView doluysa gösterilecek TextView'yi gizleyin
+                if (emptyTextViewMain != null) {
+                    emptyTextViewMain.setVisibility(View.GONE);
+                }
+            }
         }
         private void setBottomNavigationView(){
 

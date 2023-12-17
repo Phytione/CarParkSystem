@@ -6,7 +6,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/imageView"
@@ -14,6 +15,11 @@
         android:layout_height="208dp"
         android:layout_marginBottom="40dp"
         android:src="@drawable/car"/>
+    <ProgressBar
+        android:id="@+id/progressBarMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/edtEposta"
@@ -69,5 +75,7 @@
         android:layout_marginRight="80dp"
         android:textSize="20dp"
         android:textAlignment="center"/>
+
+
 
 </LinearLayout>

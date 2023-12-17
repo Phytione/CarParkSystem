@@ -1,5 +1,6 @@
 package com.example.parkingsystem.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -7,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkingsystem.Interfaces.OtoparkInfo;
+import com.example.parkingsystem.MapsActivities.AdminMapsActivity;
+import com.example.parkingsystem.MapsActivities.MapsActivity;
 import com.example.parkingsystem.databinding.RecylerRowBinding;
 
 import java.util.ArrayList;
@@ -16,8 +19,11 @@ import java.util.Comparator;
 public class OtoparkAdapter extends RecyclerView.Adapter<OtoparkAdapter.OtoparkHolder> {
 
     private ArrayList<OtoparkInfo> otoparkInfoArrayList;
-    public OtoparkAdapter(ArrayList<OtoparkInfo> otoparkInfoArrayList){
+    private Context context;
+    private OnDataSetChangedListener onDataSetChangedListener;
+    public OtoparkAdapter(Context context,ArrayList<OtoparkInfo> otoparkInfoArrayList){
         this.otoparkInfoArrayList=otoparkInfoArrayList;
+        this.context=context;
     }
 
     @NonNull
@@ -54,6 +60,9 @@ public class OtoparkAdapter extends RecyclerView.Adapter<OtoparkAdapter.OtoparkH
             this.recylerRowBinding=recylerRowBinding;
         }
     }
+    public void setOnDataSetChangedListener(OnDataSetChangedListener listener) {
+        this.onDataSetChangedListener = listener;
+    }
     public void sortOtoparkInfoByDistance() {
 
         Collections.sort(otoparkInfoArrayList, new Comparator<OtoparkInfo>() {
@@ -68,6 +77,14 @@ public class OtoparkAdapter extends RecyclerView.Adapter<OtoparkAdapter.OtoparkH
 
         // Veri setinde değişiklik olduğunu adapter'a bildir
         notifyDataSetChanged();
+
+        if(onDataSetChangedListener != null){
+            onDataSetChangedListener.onDataSetChanged();
+        }
+
+    }
+    public interface OnDataSetChangedListener {
+        void onDataSetChanged();
     }
 
 }

@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -21,10 +22,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.parkingsystem.AdminProfileActivity;
 import com.example.parkingsystem.Interfaces.AdminReservation;
 import com.example.parkingsystem.Adapters.AdminReservationAdapter;
 import com.example.parkingsystem.CustomItems.CustomInfoWindowFragment;
@@ -70,6 +75,10 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
     TextView txtToplamRandevu;
     TextView txtOtoparklarim;
     BottomNavigationView bottomNavigationViewAdmin;
+    private TextView emptyTextView;
+    private static final long WAIT_TIME = 500; // 0.5 saniye
+    private long lastClickTime = 0;
+    ProgressBar progressBar;
 
 
     @Override
@@ -87,20 +96,48 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         registerLauncher();
         fetchOtoparkData();
         adminReservationArrayList=new ArrayList<>();
-        adminReservationAdapter=new AdminReservationAdapter(adminReservationArrayList);
+        adminReservationAdapter=new AdminReservationAdapter(this,adminReservationArrayList);
         binding.recyclerView2.setAdapter(adminReservationAdapter);
         txtToplamRandevu=binding.txtToplamRandevu;
         txtToplamRandevu.setVisibility(View.INVISIBLE);
         txtOtoparklarim=binding.txtOtoparklarim;
         txtOtoparklarim.setVisibility(View.INVISIBLE);
 
+        progressBar = findViewById(R.id.progressBarAdmin);
+
         bottomNavigationViewAdmin = (BottomNavigationView) binding.bottomNavigationViewAdmin;
 
         setBottomNavigationViewAdmin();
 
+        emptyTextView = binding.emptyTextView;
+        checkEmptyView();
 
 
 
+
+
+
+    }
+    public void checkEmptyView() {
+        if (adminReservationAdapter.getItemCount() == 0) {
+            binding.recyclerView2.setVisibility(View.INVISIBLE);
+            txtToplamRandevu.setVisibility(View.INVISIBLE);
+            txtOtoparklarim.setVisibility(View.INVISIBLE);
+
+            // RecyclerView boşken gösterilecek TextView'yi görünür yapın
+            if (emptyTextView != null) {
+                emptyTextView.setVisibility(View.VISIBLE);
+            }
+        } else {
+            binding.recyclerView2.setVisibility(View.VISIBLE);
+            txtToplamRandevu.setVisibility(View.VISIBLE);
+            txtOtoparklarim.setVisibility(View.VISIBLE);
+
+            // RecyclerView doluysa gösterilecek TextView'yi gizleyin
+            if (emptyTextView != null) {
+                emptyTextView.setVisibility(View.GONE);
+            }
+        }
     }
 
 
@@ -169,12 +206,8 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         });
     }
 
-    public void btnAdminMapsCikis(View view) {
-        firebaseAuth.signOut();
-        Intent intentToMain = new Intent(AdminMapsActivity.this, MainActivity.class);
-        startActivity(intentToMain);
-        finish();
-    }
+
+
 
     @Override
     public void onMapLongClick(@NonNull LatLng latLng) {
@@ -192,7 +225,7 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
     }
 
     private void getOtoparkReservations(String otoparkAdi) {
-        Log.d("OtoparkReservations", "Getting reservations for: " + otoparkAdi);
+        progressBar.setVisibility(View.VISIBLE);
 
         firebaseFirestore.collection("Rezervasyonlar")
                 .whereEqualTo("otoparkAdi", otoparkAdi)
@@ -237,7 +270,9 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
                     } else {
                         showToast("Rezervasyonlar getirilirken bir hata oluştu. Tekrar deneyiniz");
                     }
+                    progressBar.setVisibility(View.GONE);
                 });
+
     }
 
     private void showReservationMenu() {
@@ -354,19 +389,28 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         void onNameFetched(String userName);
     }
 
-    private void setBottomNavigationViewAdmin(){
-        bottomNavigationViewAdmin.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+    private void setBottomNavigationViewAdmin() {
+        bottomNavigationViewAdmin.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onNavigationItemReselected(@NonNull MenuItem item) {
-                if (item.getItemId()==R.id.homeScreenAdmin){
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // Bu metot, bir menü öğesi tıklandığında çağrılır
 
-                } else if (item.getItemId()==R.id.profileScreenAdmin) {
-
-
+                if (item.getItemId() == R.id.homeScreenAdmin) {
+                    // Ana sayfaya git
+                } else if (item.getItemId() == R.id.profileScreenAdmin) {
+                    // Profil sayfasına git
+                    Intent intentToAdminProfile = new Intent(AdminMapsActivity.this, AdminProfileActivity.class);
+                    startActivity(intentToAdminProfile);
+                } else {
+                    showToast("Beklenmeyen bir hata oluştu");
                 }
+
+                return true; // true döndürerek seçimi işlemeyi bitirir
             }
         });
     }
+
+
 
 
 }

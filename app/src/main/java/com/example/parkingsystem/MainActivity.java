@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.parkingsystem.CustomItems.CustomToast;
 import com.example.parkingsystem.SignUpActivites.KayitOl;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser user;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +40,13 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth=FirebaseAuth.getInstance();
         user=firebaseAuth.getCurrentUser();
-        /*if(user!=null){
-            Intent intent=new Intent(MainActivity.this,MapsActivity.class);
-            startActivity(intent);
-            finish();
-        }*/
+        progressBar=binding.progressBarMain;
         provideCheck();
-
-
-
 
 
     }
     public void btnGirisUser(View view){
+        progressBar.setVisibility(View.VISIBLE);
         String email=binding.edtEposta.getText().toString();
         String sifre=binding.edtSifre.getText().toString();
 
@@ -73,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+
         }
+
+        progressBar.setVisibility(View.GONE);
 
     }
     public void btnGirisAdmin(View view){
@@ -89,12 +88,10 @@ public class MainActivity extends AppCompatActivity {
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
-
     }
     private void provideCheck(){
         if(user!=null){
             List<? extends UserInfo> providers=user.getProviderData();
-
             for (UserInfo userInfo : providers){
                 String providerID=userInfo.getProviderId();
 
@@ -106,9 +103,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intentToAdmin=new Intent(MainActivity.this, AdminMapsActivity.class);
                     startActivity(intentToAdmin);
                     finish();
-
                 }
-
             }
         }
     }

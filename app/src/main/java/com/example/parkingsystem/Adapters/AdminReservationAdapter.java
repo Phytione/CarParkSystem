@@ -1,5 +1,6 @@
 package com.example.parkingsystem.Adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.parkingsystem.Interfaces.AdminReservation;
+import com.example.parkingsystem.MapsActivities.AdminMapsActivity;
 import com.example.parkingsystem.R;
 
 import java.text.DateFormat;
@@ -23,9 +25,13 @@ import java.util.Locale;
 
 public class AdminReservationAdapter extends RecyclerView.Adapter<AdminReservationAdapter.AdminReservationViewHolder> {
     private List<AdminReservation> adminReservationList;
+    private Context context;
 
-    public AdminReservationAdapter(List<AdminReservation> adminReservationList){
+
+    public AdminReservationAdapter(Context context,List<AdminReservation> adminReservationList){
         this.adminReservationList=adminReservationList;
+        this.context=context;
+
     }
 
 
@@ -70,6 +76,8 @@ public class AdminReservationAdapter extends RecyclerView.Adapter<AdminReservati
         this.adminReservationList = adminReservationList;
 
         notifyDataSetChanged();
+
+        ((AdminMapsActivity) context).checkEmptyView();
     }
 
     public static class AdminReservationViewHolder extends RecyclerView.ViewHolder{
