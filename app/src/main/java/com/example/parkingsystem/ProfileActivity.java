@@ -7,9 +7,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.example.parkingsystem.CustomItems.CustomToast;
@@ -30,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private FirebaseFirestore firebaseFirestore;
     ProgressBar progressBar;
+
 
 
     BottomNavigationView bottomNavigationView;
@@ -57,7 +61,14 @@ public class ProfileActivity extends AppCompatActivity {
         String userEmail=firebaseAuth.getCurrentUser().getEmail();
         binding.edtProfileEposta.setText(userEmail);
 
+
+
+
         getDataForProfile();
+
+
+
+
 
 
     }
@@ -68,19 +79,25 @@ public class ProfileActivity extends AppCompatActivity {
         String birlestir="+90"+number;
         if(name.equals("") || number.equals("")){
             showToast("Lütfen bütün değerleri doldurunuz");
-        }else {
-            checkPhoneNumber(birlestir, new CheckPhoneNumberListener() {
-                @Override
-                public void onCheckResult(boolean userExists) {
-                    if(userExists){
-                        showToast("Sistemimizde bu numaraya sahip kullanıcı var. Tekrar deneyiniz");
+        } else {
+            if (birlestir.length()==13){
+                checkPhoneNumber(birlestir, new CheckPhoneNumberListener() {
+                    @Override
+                    public void onCheckResult(boolean userExists) {
+                        if(userExists){
+                            showToast("Sistemimizde bu numaraya sahip kullanıcı var. Tekrar deneyiniz");
 
-                    }else{
-                        showConfirmationDialog(email,name,birlestir);
+                        }else{
+                            showConfirmationDialog(email,name,birlestir);
+                        }
+
                     }
+                });
 
-                }
-            });
+            }else {
+                showToast("Lütfen geçerli bir numara giriniz");
+            }
+
 
         }
 
@@ -145,6 +162,8 @@ public class ProfileActivity extends AppCompatActivity {
 
                 binding.edtProfileName.setTextColor(Color.BLACK);
                 binding.edtProfilePhoneNumber.setTextColor(Color.BLACK);
+
+                checkButtonVisibility();
             }else{
                 binding.edtProfileName.setHint("İsminizi giriniz");
                 binding.edtProfilePhoneNumber.setHint("5XX-XXX-XXXX");
@@ -220,6 +239,26 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void checkButtonVisibility() {
+        String number = binding.edtProfilePhoneNumber.getText().toString();
+        String name = binding.edtProfileName.getText().toString();
+
+        Log.d("kesin",number);
+        Log.d("kesin",name);
+
+        if (!name.isEmpty() && !number.isEmpty()) {
+            // İkisi de doluysa btnSave'i gizle
+
+            binding.btnSave.setVisibility(View.GONE);
+        } else {
+            // İkisi de boşsa btnSave'i göster
+            binding.btnSave.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+
     private void showToast(String message){
         CustomToast.showToast(getApplicationContext(),message);
     }

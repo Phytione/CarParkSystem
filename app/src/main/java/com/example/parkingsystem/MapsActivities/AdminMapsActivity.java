@@ -17,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -40,6 +41,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -106,6 +109,8 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         progressBar = findViewById(R.id.progressBarAdmin);
 
         bottomNavigationViewAdmin = (BottomNavigationView) binding.bottomNavigationViewAdmin;
+
+        bottomNavigationViewAdmin.setSelectedItemId(R.id.homeScreenAdmin);
 
         setBottomNavigationViewAdmin();
 
@@ -351,9 +356,12 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
     private void addMarkerToMap(LatLng latLng, String otoparkAdi) {
+
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
-                .title(otoparkAdi);
+                .title(otoparkAdi)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+
         mMap.addMarker(markerOptions);
 
     }
@@ -393,19 +401,16 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         bottomNavigationViewAdmin.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                // Bu metot, bir menü öğesi tıklandığında çağrılır
-
                 if (item.getItemId() == R.id.homeScreenAdmin) {
-                    // Ana sayfaya git
+
                 } else if (item.getItemId() == R.id.profileScreenAdmin) {
-                    // Profil sayfasına git
                     Intent intentToAdminProfile = new Intent(AdminMapsActivity.this, AdminProfileActivity.class);
                     startActivity(intentToAdminProfile);
                 } else {
                     showToast("Beklenmeyen bir hata oluştu");
                 }
 
-                return true; // true döndürerek seçimi işlemeyi bitirir
+                return true;
             }
         });
     }

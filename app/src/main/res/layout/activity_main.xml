@@ -29,7 +29,10 @@
         android:layout_marginRight="40dp"
         android:ems="10"
         android:hint="E-Postanızı Giriniz"
-        android:inputType="text" />
+        android:inputType="text"
+        android:background="@drawable/rounded_edittext"
+        android:drawableStart="@drawable/icemail"
+        android:drawablePadding="10dp"/>
 
     <EditText
         android:id="@+id/edtSifre"
@@ -40,7 +43,10 @@
         android:layout_marginRight="40dp"
         android:hint="Şifrenizi Giriniz"
         android:password="true"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="40dp"
+        android:drawableStart="@drawable/icpass"
+        android:drawablePadding="10dp"
+        android:background="@drawable/rounded_edittext"/>
 
     <Button
         android:id="@+id/btnGirisUser"

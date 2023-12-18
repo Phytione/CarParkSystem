@@ -37,10 +37,13 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        map:menu="@menu/bottom_nav_admin_menu" />
+        map:menu="@menu/bottom_nav_admin_menu"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/bottom_background"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

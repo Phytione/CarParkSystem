@@ -33,6 +33,8 @@ public class AdminProfileActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         bottomNavigationViewAdminProfile = (BottomNavigationView) binding.bottomNavigationViewAdminProfile;
 
+        bottomNavigationViewAdminProfile.setSelectedItemId(R.id.profileScreenAdmin);
+
         setBottomNavigationViewAdmin();
 
         setEdtText();
@@ -59,6 +61,7 @@ public class AdminProfileActivity extends AppCompatActivity {
                     intentToAdminMaps.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intentToAdminMaps);
                 } else if (item.getItemId() == R.id.profileScreenAdmin) {
+
                 } else {
                     showToast("Beklenmeyen bir hata oluştu");
                 }

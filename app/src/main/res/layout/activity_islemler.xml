@@ -40,7 +40,11 @@
                 map:layout_constraintEnd_toEndOf="parent"
                 map:layout_constraintHorizontal_bias="0.5"
                 map:layout_constraintStart_toStartOf="parent"
-                map:menu="@menu/bottom_nav_menu" />
+                map:menu="@menu/bottom_nav_menu"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/bottom_background"/>
 
 
 

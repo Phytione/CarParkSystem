@@ -25,8 +25,10 @@
             map:layout_constraintHorizontal_bias="0.5"
             map:layout_constraintStart_toStartOf="parent"
             map:menu="@menu/bottom_nav_menu"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
 
-            />
+            android:background="@drawable/bottom_background"/>
 
 
     </RelativeLayout>
@@ -47,8 +49,9 @@
 
     <EditText
         android:id="@+id/edtProfileName"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:foregroundGravity="center"
         android:layout_marginTop="48dp"
         android:ems="10"
         android:hint="İsminizi giriniz"
@@ -56,24 +59,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtProfileEposta" />
+        app:layout_constraintTop_toBottomOf="@+id/edtProfileEposta"
+        android:background="@drawable/rounded_edittext"/>
 
     <EditText
         android:inputType="none"
         android:editable="false"
         android:id="@+id/edtProfileEposta"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="108dp"
         android:ems="10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/rounded_edittext"/>
 
     <EditText
         android:id="@+id/edtProfilePhoneNumber"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:ems="10"
@@ -82,13 +87,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtProfileName" />
+        app:layout_constraintTop_toBottomOf="@+id/edtProfileName"
+        android:background="@drawable/rounded_edittext"/>
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/btnSave"

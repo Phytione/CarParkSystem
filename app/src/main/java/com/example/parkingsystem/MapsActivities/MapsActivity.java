@@ -561,7 +561,8 @@
         private void addMarkerToMap(LatLng latLng, String otoparkAdi) {
             MarkerOptions markerOptions = new MarkerOptions()
                     .position(latLng)
-                    .title(otoparkAdi);
+                    .title(otoparkAdi)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
 
 
             mMap.addMarker(markerOptions);

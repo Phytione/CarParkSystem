@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivites.KayitOl">
-
     <EditText
         android:id="@+id/edtTextKayitEposta"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableStart="@drawable/icemail"
+        android:drawablePadding="10dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="50dp"
@@ -20,7 +22,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/rounded_edittext"/>
 
     <EditText
         android:id="@+id/edtTextKayitSifre"
@@ -35,7 +38,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitEposta" />
+        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitEposta"
+        android:drawableStart="@drawable/icpass"
+        android:drawablePadding="10dp"
+        android:background="@drawable/rounded_edittext"/>
 
     <EditText
         android:id="@+id/edtTextKayitSifreDogrulama"
@@ -49,7 +55,10 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitSifre" />
+        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitSifre"
+        android:drawableStart="@drawable/icpassconf"
+        android:drawablePadding="10dp"
+        android:background="@drawable/rounded_edittext"/>
 
     <Button
         android:id="@+id/btnKayitOl"
@@ -62,6 +71,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtTextKayitSifreDogrulama"
-        app:layout_constraintVertical_bias="0.079" />
+        app:layout_constraintVertical_bias="0.079"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
