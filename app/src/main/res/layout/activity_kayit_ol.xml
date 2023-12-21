@@ -6,72 +6,84 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivites.KayitOl">
-    <EditText
-        android:id="@+id/edtTextKayitEposta"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/icemail"
-        android:drawablePadding="10dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="50dp"
-        android:ems="10"
-        android:hint="E-postanızı giriniz"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/edtTextKayitSifre"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/rounded_edittext"/>
 
-    <EditText
-        android:id="@+id/edtTextKayitSifre"
-        android:layout_width="match_parent"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:ems="10"
-        android:hint="Şifrenizi Giriniz"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitEposta"
-        android:drawableStart="@drawable/icpass"
-        android:drawablePadding="10dp"
-        android:background="@drawable/rounded_edittext"/>
-
-    <EditText
-        android:id="@+id/edtTextKayitSifreDogrulama"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="50dp"
-        android:ems="10"
-        android:hint="Şifrenizi Doğrulayınız"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitSifre"
-        android:drawableStart="@drawable/icpassconf"
-        android:drawablePadding="10dp"
-        android:background="@drawable/rounded_edittext"/>
-
-    <Button
-        android:id="@+id/btnKayitOl"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:onClick="btnKayitOl"
-        android:text="Kayıt Ol"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardElevation="8dp"
+        app:strokeColor="#000000"
+        app:strokeWidth="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTextKayitSifreDogrulama"
-        app:layout_constraintVertical_bias="0.079"
-        />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="KAYIT OL"
+                android:textSize="25dp"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"/>
+            <EditText
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/edtTextKayitEposta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/icemail"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="E-postanızı giriniz"
+                android:inputType="text" />
+
+            <EditText
+                android:layout_marginBottom="20dp"
+                android:id="@+id/edtTextKayitSifre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/icpass"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Şifrenizi Giriniz"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:layout_marginBottom="20dp"
+                android:id="@+id/edtTextKayitSifreDogrulama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/icpassconf"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:hint="Şifrenizi Doğrulayınız"
+                android:inputType="textPassword" />
+
+            <Button
+                android:layout_marginBottom="40dp"
+                android:id="@+id/btnKayitOl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:onClick="btnKayitOl"
+                android:text="Kayıt Ol"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

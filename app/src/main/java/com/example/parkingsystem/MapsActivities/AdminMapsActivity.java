@@ -57,6 +57,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCallback,GoogleMap.OnMapLongClickListener,GoogleMap.OnMarkerClickListener {
 
@@ -216,20 +217,20 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     @Override
     public void onMapLongClick(@NonNull LatLng latLng) {
-        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng));
+        Marker marker = mMap.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker)));
         showCustomInfoWindow(latLng.latitude, latLng.longitude);
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+
         String otoparkAdi = marker.getTitle();
         // Otoparka tıklandığında rezervasyonları getir ve göster
         getOtoparkReservations(otoparkAdi);
-
         return true;
     }
 
-    private void getOtoparkReservations(String otoparkAdi) {
+    /*private void getOtoparkReservations(String otoparkAdi) {
         progressBar.setVisibility(View.VISIBLE);
 
         firebaseFirestore.collection("Rezervasyonlar")
@@ -239,7 +240,6 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
                     if (task.isSuccessful()) {
                         // Rezervasyonları al ve RecyclerView'e set et
                         List<AdminReservation> reservationList = new ArrayList<>();
-                        final int[] activeReservationCount = {0};
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String userEmail = document.getString("userEmail");
                             String startTime = document.getString("startTime");
@@ -267,6 +267,11 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
                                             txtOtoparklarim.setText(otoparkAdi);
                                             txtToplamRandevu.setVisibility(View.VISIBLE);
                                             txtToplamRandevu.setText("Toplam Rezerve Sayısı: " + String.valueOf(reservationList.size()));
+
+                                            Log.d("liste",userName );
+                                            if(reservationList.isEmpty() || reservationList.equals(null)){
+                                                showToast("Bu otoparktan henüz bir randevu alınmadı.");
+                                            }
                                         }
                                     }
                                 });
@@ -278,7 +283,81 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
                     progressBar.setVisibility(View.GONE);
                 });
 
+    }*/
+
+    private void getOtoparkReservations(String otoparkAdi) {
+        progressBar.setVisibility(View.VISIBLE);
+
+        firebaseFirestore.collection("Rezervasyonlar")
+                .whereEqualTo("otoparkAdi", otoparkAdi)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        List<AdminReservation> reservationList = new ArrayList<>();
+                        final int[] activeReservationCount = {0};
+                        int totalReservations = task.getResult().size();
+                        AtomicInteger processedCount = new AtomicInteger(0);
+
+                        if (totalReservations == 0) {
+                            // Rezervasyon bulunmuyorsa
+                            showToast("Bu otoparka ait rezervasyon bilgisi bulunamadı");
+                            binding.recyclerView2.setVisibility(View.INVISIBLE);
+                            binding.emptyTextView.setVisibility(View.VISIBLE);
+                            binding.txtOtoparklarim.setVisibility(View.INVISIBLE);
+                            binding.txtToplamRandevu.setVisibility(View.INVISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                            return;
+                        }else {
+                            binding.txtToplamRandevu.setVisibility(View.VISIBLE);
+                            binding.txtOtoparklarim.setVisibility(View.VISIBLE);
+                            binding.emptyTextView.setVisibility(View.INVISIBLE);
+                            binding.recyclerView2.setVisibility(View.VISIBLE);
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userEmail = document.getString("userEmail");
+                                String startTime = document.getString("startTime");
+                                String endTime = document.getString("endTime");
+
+                                if (userEmail != null && startTime != null && endTime != null) {
+                                    getEmailName(userEmail, new OnNameFetchedListener() {
+                                        @Override
+                                        public void onNameFetched(String userName) {
+                                            if (userName != null) {
+                                                reservationList.add(new AdminReservation(userName, startTime, endTime));
+                                            }
+
+                                            // İşlemlerin tamamlandığını kontrol et
+                                            int currentCount = processedCount.incrementAndGet();
+                                            if (currentCount == totalReservations) {
+                                                // RecyclerView için LinearLayoutManager ekleyin
+                                                LinearLayoutManager layoutManager = new LinearLayoutManager(AdminMapsActivity.this);
+                                                binding.recyclerView2.setLayoutManager(layoutManager);
+
+                                                // RecyclerView'e rezervasyonları set etmek için adapter'ı kullanın
+                                                adminReservationAdapter.setAdminReservationList(reservationList);
+                                                adminReservationAdapter.notifyDataSetChanged();
+
+                                                // Alt menüyü göster
+                                                showReservationMenu();
+                                                txtOtoparklarim.setVisibility(View.VISIBLE);
+                                                txtOtoparklarim.setText(otoparkAdi);
+                                                txtToplamRandevu.setVisibility(View.VISIBLE);
+                                                txtToplamRandevu.setText("Toplam Rezerve Sayısı: " + String.valueOf(reservationList.size()));
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    // Null durumlarını kontrol et
+                                    Log.e("getOtoparkReservations", "Null değerler içeren bir belge bulundu.");
+                                }
+                            }
+                        }
+                    } else {
+                        showToast("Rezervasyonlar getirilirken bir hata oluştu. Tekrar deneyiniz");
+                    }
+                    progressBar.setVisibility(View.GONE);
+                });
     }
+
 
     private void showReservationMenu() {
         if (binding.recyclerView2.getVisibility() != View.VISIBLE) {
@@ -356,16 +435,15 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
     private void addMarkerToMap(LatLng latLng, String otoparkAdi) {
-
         MarkerOptions markerOptions = new MarkerOptions()
                 .position(latLng)
                 .title(otoparkAdi)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
 
         mMap.addMarker(markerOptions);
 
     }
-    private void getEmailName(String userEmail, OnNameFetchedListener listener) {
+    /*private void getEmailName(String userEmail, OnNameFetchedListener listener) {
         // Firebase Firestore referansını al
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
@@ -391,7 +469,34 @@ public class AdminMapsActivity extends FragmentActivity implements OnMapReadyCal
                         }
                     }
                 });
+    }*/
+
+    private void getEmailName(String userEmail, OnNameFetchedListener listener) {
+        // Firebase Firestore referansını al
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+
+        // "Profile" koleksiyonundan kullanıcının ismini al
+        firebaseFirestore.collection("Profile")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
+                        // Kullanıcının ismini al
+                        String userName = task.getResult().getDocuments().get(0).getString("name");
+
+                        // Listener'a ismi iletilir
+                        if (listener != null) {
+                            listener.onNameFetched(userName);
+                        }
+                    } else {
+                        // Hata durumunda listener'a null değer iletilir
+                        if (listener != null) {
+                            listener.onNameFetched(null);
+                        }
+                    }
+                });
     }
+
 
     public interface OnNameFetchedListener {
         void onNameFetched(String userName);

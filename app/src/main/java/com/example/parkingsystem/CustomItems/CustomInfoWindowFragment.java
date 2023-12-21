@@ -68,7 +68,7 @@ public class CustomInfoWindowFragment extends DialogFragment {
                     String bosAracSayisi=aracSayisi;
 
                     if (otoparkAdi.equals("") || aracSayisi.equals("") || elektrikliAraclar.equals("") || saatlikUcret.equals("")){
-                        showToast("Lütfen tüm alanları doldurunuz");
+                        Toast.makeText(mContext,"Lütfen tüm alanları doldurunuz",Toast.LENGTH_SHORT).show();
                     }else{
                         saveOtoparkInfo(otoparkAdi,aracSayisi,elektrikliAraclar,saatlikUcret,latLng,bosAracSayisi);
                         onKaydetButtonClick();
@@ -82,6 +82,7 @@ public class CustomInfoWindowFragment extends DialogFragment {
                 @Override
                 public void onClick(View v) {
                     dismiss();
+                    Toast.makeText(mContext,"İşlem iptal edildi",Toast.LENGTH_SHORT).show();
                 }
             });
             

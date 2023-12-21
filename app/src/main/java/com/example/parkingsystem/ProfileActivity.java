@@ -110,6 +110,7 @@ public class ProfileActivity extends AppCompatActivity {
         builder.setPositiveButton("Evet",(dialog,which)->{
             showToast("Kayıt Başarılı");
             saveProfileInfo(email,name,number);
+            binding.btnSave.setVisibility(View.GONE);
         });
         builder.setNegativeButton("Hayır",(dialog,which)->{
             showToast("Değişiklikler onaylanmadı");
